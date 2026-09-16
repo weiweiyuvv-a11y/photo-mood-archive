@@ -21,6 +21,11 @@ final class VoiceNoteRecorder: ObservableObject {
         })
     }
 
+    func toggle() {
+        if isRecording || isStarting { stop() }
+        else { Task { await start() } }
+    }
+
     func start() async {
         guard !isRecording, !isStarting else { return }
         isStarting = true

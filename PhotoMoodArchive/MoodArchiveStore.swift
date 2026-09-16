@@ -13,7 +13,8 @@ final class MoodArchiveStore: ObservableObject {
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
-        moods = Self.load([String: Int].self, key: moodsKey, defaults: defaults) ?? [:]
+        moods = (Self.load([String: Int].self, key: moodsKey, defaults: defaults) ?? [:])
+            .mapValues { min(max($0, 0), 8) }
         notes = Self.load([String: String].self, key: notesKey, defaults: defaults) ?? [:]
         soundtracks = Self.load([String: SoundtrackMemory].self, key: soundtracksKey, defaults: defaults) ?? [:]
     }

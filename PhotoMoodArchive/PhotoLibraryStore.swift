@@ -15,6 +15,8 @@ final class PhotoLibraryStore: NSObject, ObservableObject, PHPhotoLibraryChangeO
     @Published private(set) var allAssets: [PhotoAsset] = []
     @Published private(set) var assetsByDay: [String: [PhotoAsset]] = [:]
     @Published private(set) var isLoading = false
+    @Published private(set) var indexedAssetCount = 0
+    @Published private(set) var totalAssetCount = 0
     @Published private(set) var favorites: Set<String> = []
     @Published private(set) var revision = 0
     @Published var errorMessage: String?
@@ -24,6 +26,7 @@ final class PhotoLibraryStore: NSObject, ObservableObject, PHPhotoLibraryChangeO
     private var refreshAgain = false
     private var isRequestingPermission = false
     private var observing = false
+    private var changingAssets = Set<String>()
 
     var hasAccess: Bool { authorizationStatus == .authorized || authorizationStatus == .limited }
 
@@ -37,7 +40,11 @@ final class PhotoLibraryStore: NSObject, ObservableObject, PHPhotoLibraryChangeO
         Task { @MainActor [weak self] in await self?.refresh() }
     }
 
-    func requestAccessAndLoad() async {
+    func requestAccessAndLoad(userInitiated: Bool = false) async {
+        if userInitiated, PHPhotoLibrary.authorizationStatus(for: .readWrite) == .denied {
+            if let url = URL(string: UIApplication.openSettingsURLString) { await UIApplication.shared.open(url) }
+            return
+        }
         guard !isRequestingPermission else { return }
         isRequestingPermission = true
         defer { isRequestingPermission = false }
@@ -53,6 +60,7 @@ final class PhotoLibraryStore: NSObject, ObservableObject, PHPhotoLibraryChangeO
         if !observing { PHPhotoLibrary.shared().register(self); observing = true }
         if isLoading { refreshAgain = true; return }
         isLoading = true
+        indexedAssetCount = 0
         defer { isLoading = false }
         repeat {
             refreshAgain = false
@@ -65,7 +73,7 @@ final class PhotoLibraryStore: NSObject, ObservableObject, PHPhotoLibraryChangeO
                 var assets: [String: PHAsset] = [:]
                 var favorites = Set<String>()
                 result.enumerateObjects { asset, _, _ in
-                    guard let date = asset.creationDate else { return }
+                    guard !asset.mediaSubtypes.contains(.photoScreenshot), let date = asset.creationDate else { return }
                     assets[asset.localIdentifier] = asset
                     if asset.isFavorite { favorites.insert(asset.localIdentifier) }
                     photos.append(PhotoAsset(id: asset.localIdentifier, creationDate: date,
@@ -81,6 +89,8 @@ final class PhotoLibraryStore: NSObject, ObservableObject, PHPhotoLibraryChangeO
             if refreshAgain { continue }
             assetIndex = snapshot.assets
             favorites = snapshot.favorites
+            totalAssetCount = snapshot.photos.count
+            indexedAssetCount = snapshot.photos.count
             allAssets = snapshot.photos
             assetsByDay = Dictionary(grouping: snapshot.photos, by: { $0.creationDate.archiveKey() })
             thumbnailCache.removeAllObjects()
@@ -90,6 +100,7 @@ final class PhotoLibraryStore: NSObject, ObservableObject, PHPhotoLibraryChangeO
 
     private func clearLibrary() {
         allAssets = []; assetsByDay = [:]; assetIndex = [:]; favorites = []
+        totalAssetCount = 0; indexedAssetCount = 0
         thumbnailCache.removeAllObjects()
         revision += 1
     }
@@ -138,6 +149,8 @@ final class PhotoLibraryStore: NSObject, ObservableObject, PHPhotoLibraryChangeO
     }
 
     func toggleFavorite(_ photo: PhotoAsset) async {
+        guard changingAssets.insert(photo.id).inserted else { return }
+        defer { changingAssets.remove(photo.id) }
         guard let asset = assetIndex[photo.id] else { return }
         let nextValue = !favorites.contains(photo.id)
         do {
@@ -149,6 +162,8 @@ final class PhotoLibraryStore: NSObject, ObservableObject, PHPhotoLibraryChangeO
     }
 
     func deletePhoto(_ photo: PhotoAsset) async -> Bool {
+        guard changingAssets.insert(photo.id).inserted else { return false }
+        defer { changingAssets.remove(photo.id) }
         guard let asset = assetIndex[photo.id] else { return false }
         do {
             try await PHPhotoLibrary.shared().performChanges { @Sendable in
@@ -163,6 +178,17 @@ final class PhotoLibraryStore: NSObject, ObservableObject, PHPhotoLibraryChangeO
             errorMessage = "删除未完成：\(error.localizedDescription)"
             return false
         }
+    }
+
+    var latestAssetMonth: Date? {
+        allAssets.first.map { ArchiveCalendar.monthStart($0.creationDate) }
+    }
+
+    func openInPhotos(_ photo: PhotoAsset) {
+        let uuid = photo.id.components(separatedBy: "/").first ?? photo.id
+        guard let encoded = uuid.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: "photos-redirect://asset?uuid=\(encoded)") else { return }
+        UIApplication.shared.open(url)
     }
 
     func manageLimitedAccess() {
@@ -219,33 +245,50 @@ private final class PhotoImageRequest: @unchecked Sendable {
 
 struct PhotoThumbnailView: View {
     let photo: PhotoAsset
-    var size: CGFloat = 160
+    let size: CGFloat
     var allowsNetworkAccess = false
-    @EnvironmentObject private var library: PhotoLibraryStore
+
+    @EnvironmentObject private var photoLibrary: PhotoLibraryStore
     @State private var image: UIImage?
-    @State private var failed = false
+    @State private var didAttemptLoad = false
+
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                Color(.tertiarySystemFill)
-                if let image {
-                    Image(uiImage: image).resizable().scaledToFill()
-                        .frame(width: geometry.size.width, height: geometry.size.height).clipped()
-                } else {
-                    Image(systemName: failed ? "icloud" : "photo")
-                        .foregroundStyle(.secondary).font(.caption)
-                }
+        Group {
+            if let image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+            } else if didAttemptLoad {
+                Rectangle()
+                    .fill(.thinMaterial)
+                    .overlay {
+                        Image(systemName: "icloud")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(ArchiveDesign.secondaryInk.opacity(0.55))
+                    }
+            } else {
+                Rectangle()
+                    .fill(.thinMaterial)
+                    .overlay(ProgressView().scaleEffect(0.72))
             }
         }
-        .clipped()
-        .task(id: "\(photo.id)-\(library.revision)") {
-            image = nil; failed = false
+        .frame(width: size, height: size)
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .task(id: "\(photo.id)-\(photoLibrary.revision)") {
+            image = nil
+            didAttemptLoad = false
             do {
-                let fetched = try await library.image(for: photo, size: CGSize(width: size * 2, height: size * 2), network: allowsNetworkAccess)
+                let fetched = try await photoLibrary.image(
+                    for: photo,
+                    size: CGSize(width: min(size * 3, 900), height: min(size * 3, 900)),
+                    network: allowsNetworkAccess
+                )
                 try Task.checkCancellation()
                 image = fetched
-            } catch is CancellationError {} catch { failed = true }
+                didAttemptLoad = true
+            } catch is CancellationError {} catch {
+                didAttemptLoad = true
+            }
         }
-        .accessibilityHidden(true)
     }
 }

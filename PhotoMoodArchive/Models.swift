@@ -93,10 +93,10 @@ enum ArchiveDesign {
     static let prismYellow = Color(red: 1.00, green: 0.86, blue: 0.06)
     static let glassLavender = Color(red: 0.78, green: 0.76, blue: 0.88)
 
-    static let ink = Color.primary
-    static let secondaryInk = Color.secondary
-    static let paper = Color(.systemGroupedBackground)
-    static let liftedPaper = Color(.secondarySystemGroupedBackground)
+    static let ink = Color(red: 0.14, green: 0.13, blue: 0.22)
+    static let secondaryInk = Color(red: 0.47, green: 0.45, blue: 0.58)
+    static let paper = Color(red: 0.91, green: 0.90, blue: 0.96)
+    static let liftedPaper = Color(red: 0.975, green: 0.965, blue: 1.0)
     static let hairline = Color(red: 0.34, green: 0.32, blue: 0.50).opacity(0.14)
 
     static func moodBlobColor(level: Int) -> Color {

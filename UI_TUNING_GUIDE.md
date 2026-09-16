@@ -1,34 +1,160 @@
-# 交互与维护说明 · 0.2
+# UI Tuning Guide
 
-## 信息结构
+This is the working design direction for the native iOS app. Use it as a Figma checklist while Xcode installs, then mirror the same choices in SwiftUI.
 
-日历负责定位一天；手账负责查找文字回忆；足迹负责从地点找日期。三者都进入同一个 `DayDetailView`，避免不同入口出现不同编辑行为。
+## Product Feel
 
-日历选择日期只改变预览，打开这一天才进入详情；上一月和下一月以月份第一天为基准，避免 31 日跳月问题。日期选择器使用独立草稿，划掉选择器不会改变当前日期。
+The app should feel like a private seasonal almanac, not a productivity calendar. The timeline is the archive spine; the doodle mood is the emotional cover for each day.
 
-日常照片隐藏截屏，全部照片显示所有获授权图片。当天默认显示全部图片，避免以为某张照片消失。没有照片的日期也可以写手账。
+Good references:
+- Instagram Archive for the calendar memory model.
+- iOS Photos for trust, local privacy, and calm navigation.
+- EMMO for the low-pressure circular mood picker, but not for the overall visual taste.
+- A museum field-note book for paper texture, restrained spacing, and private-archive mood.
 
-## 视觉
+Avoid:
+- Heavy dashboard styling.
+- Marketing hero screens.
+- Generic purple gradients.
+- Complex onboarding before the user sees their archive.
+- Overly social/sticker-heavy EMMO styling.
 
-- 系统导航、TabView、Form、sheet 和分享面板。
-- 墨绿操作色，系统语义背景与正文颜色，适配深色模式。
-- 月份小图标保留四季变化；心情颜色对应固定九种标签，原来的 0–8 值不重映射。
-- 尺寸基于容器，不依赖 UIScreen 宽度；平板内容限宽，图片网格自适应。
-- 日期有照片数量与心情的无障碍描述；按钮有文字或 accessibilityLabel。
-- 月份切换尊重“减少动态效果”。
+## Core Screens
 
-## 状态与数据
+### 1. Timeline Archive
 
-`PhotoLibraryStore` 负责权限、后台元数据扫描、分组、收藏、删除、图片缓存和请求取消。变化观察只在取得权限之后注册；变更发生在扫描过程中时合并再扫描，发布完整快照。恢复前台重新核对授权。无权限时清空内存照片索引。
+Purpose: Let the user immediately understand what they photographed each day.
 
-`MoodArchiveStore` 沿用旧版三个 v1 存储键，支持注入 UserDefaults 做隔离测试。空白记录不进入手账列表；无照片也能保留记录。日期工具固定 Gregorian 日历，使用当前时区、周一起始。
+Figma frame:
+- iPhone 15 Pro or iPhone 16, portrait.
+- Top area: app name, current month, month navigation.
+- Horizontal 12-month strip under the header.
+- Main area: 7-column calendar grid.
+- Each day cell: day number, hand-drawn doodle face, optional tiny photo count and thumbnail strip.
 
-`VoiceNoteRecorder` 用 session 标识隔离延迟回调。停止、后台切换、离开编辑页和音频中断时释放音频资源；权限请求尚未结束时退出也不会稍后启动录音。一次识别从该次开始前的完整笔记追加，不用部分识别结果覆盖原笔记。
+Important UI behavior:
+- Empty mood = transparent doodle fill.
+- Chosen mood = seasonal color fill.
+- Days outside current month are faded.
+- Today has a slightly stronger outline, not a loud badge.
 
-`PhotoImageRequest` 用锁保护 continuation，解决图片请求完成 / 取消之间的竞争。仅显示中的大图请求网络，离开页面后取消；iCloud 无法加载时呈现重试按钮。
+### 2. Day Detail
 
-## 后续适合增加的能力
+Purpose: Show the day as a tiny memory capsule.
 
-本地手账导出 / 导入、真正的无损原文件分享、视频 / Live Photo、图库规模性能基准、日记跨设备同步。当前版本不声称这些功能已经实现。
+Figma frame:
+- Top: large month-specific doodle.
+- Beside it: weekday, full date, photo count.
+- Mood spectrum card.
+- Secret note card.
+- Photo grid.
+- Soundtrack card for a manually added song/memory note.
 
-PhotoKit 写操作与图像回调明确声明 `@Sendable`，避免 Swift 6 在系统后台队列执行继承 MainActor 的闭包时触发运行期隔离断言。语音识别结果先提取字符串与完成标志，再切回主执行器更新界面；系统权限弹窗带来的 inactive 状态不会错误取消准备过程，仅进入后台时停止。
+Important UI behavior:
+- The mood spectrum is left-to-right emotional brightness.
+- Voice is the default input affordance, but text remains editable.
+- Photos should feel like evidence of the day, not decorative wallpaper.
+
+### 3. Mood Picker
+
+Purpose: Let the user color the day's doodle quickly.
+
+Interaction:
+- 9 circular hand-drawn blob faces placed around a center prompt.
+- The picker can use soft multicolor EMMO-like mood blobs.
+- The saved calendar mark still uses the month hue so the archive remains seasonal and composed.
+
+Mapping:
+- Level 0: quiet / transparent-ish / low energy.
+- Level 4: ordinary good day.
+- Level 8: bright, vivid, high-energy day.
+
+### 4. Voice Note
+
+Purpose: Add an easter egg note without turning the app into a journal chore.
+
+Figma component:
+- Card title: Secret note.
+- Mic circle button on the right.
+- Text editor below.
+- Small listening status only while recording.
+
+States:
+- Idle: mic.circle.fill in seasonal accent color.
+- Recording: stop.circle.fill in soft red.
+- Transcript result: text appears in editor and can be changed.
+
+### 5. Trail
+
+Purpose: Offer a secondary map view without stealing the app's main timeline identity.
+
+Behavior:
+- Use existing photo GPS metadata from the local photo library.
+- Do not request live location permission for the first version.
+- Cluster nearby photos into small thumbnail pins with count badges.
+- Keep Timeline as the default view; Trail is a quiet alternate lens.
+
+## Seasonal Palette
+
+Use one hue per month. These are already encoded in `ArchiveDesign.months`.
+
+January: icy blue, hue 205.
+February: berry pink, hue 342.
+March: sprout green, hue 126.
+April: rain apricot, hue 32.
+May: fresh leaf, hue 96.
+June: sun yellow, hue 48.
+July: pool cyan, hue 178.
+August: peach, hue 24.
+September: pencil ochre, hue 58.
+October: maple orange, hue 18.
+November: dusk violet, hue 274.
+December: ribbon teal, hue 158.
+
+Figma formula:
+- Background wash: same hue, low saturation, high brightness.
+- Mood swatches: saturation 18% to 82%, brightness 96% to 68%.
+- Text: warm ink, close to `#2B251E`.
+- Secondary text: warm gray, close to `#746B62`.
+- Card background: translucent warm white.
+
+## Layout Tokens
+
+Use these in Figma and mirror them in SwiftUI:
+
+- Screen horizontal padding: 18.
+- Header vertical gap: 14.
+- Month strip item: 52 x 58.
+- Calendar grid gap: 8.
+- Day tile min height: 104.
+- Day tile radius: 16.
+- Detail card radius: 18.
+- Detail card padding: 16.
+- Photo grid gap: 8.
+- Thumbnail radius: 8.
+
+## SwiftUI Files To Edit
+
+- `Models.swift`: month names, hues, doodle kind mapping.
+- `ContentView.swift`: top header, month strip, app-level background.
+- `CalendarMonthView.swift`: calendar grid, day tile sizing, photo count and thumbnails.
+- `MoodDoodleView.swift`: hand-drawn doodle shapes.
+- `DayDetailView.swift`: mood spectrum, note card, photo grid.
+- `VoiceNoteRecorder.swift`: recording state and speech-to-text behavior.
+
+## First Figma Pass
+
+Make four frames:
+
+1. `Month Archive / Empty Permission`
+2. `Month Archive / With Photos`
+3. `Day Detail / Mood Selected`
+4. `Day Detail / Recording Note`
+
+Then test these questions:
+
+- Can I understand this is a photo archive within 3 seconds?
+- Does the doodle feel like a daily cover, not a reaction sticker pasted on top?
+- Does the month color feel seasonal without making the whole app one-color?
+- Is the voice note clearly available without making text editing feel secondary?
+- Can this fit on a small iPhone without the calendar becoming cramped?
