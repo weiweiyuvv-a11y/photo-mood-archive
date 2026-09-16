@@ -1,0 +1,334 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		100000000000000000000101 /* PhotoMoodArchiveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000001 /* PhotoMoodArchiveApp.swift */; };
+		100000000000000000000102 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000002 /* ContentView.swift */; };
+		100000000000000000000103 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000003 /* Models.swift */; };
+		100000000000000000000104 /* PhotoLibraryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000004 /* PhotoLibraryStore.swift */; };
+		100000000000000000000105 /* MoodArchiveStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000005 /* MoodArchiveStore.swift */; };
+		100000000000000000000106 /* CalendarMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000006 /* CalendarMonthView.swift */; };
+		100000000000000000000107 /* DayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000007 /* DayDetailView.swift */; };
+		100000000000000000000108 /* MoodDoodleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000008 /* MoodDoodleView.swift */; };
+		100000000000000000000109 /* VoiceNoteRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000009 /* VoiceNoteRecorder.swift */; };
+		10000000000000000000010A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10000000000000000000000A /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		100000000000000000000001 /* PhotoMoodArchiveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoMoodArchiveApp.swift; sourceTree = "<group>"; };
+		100000000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		100000000000000000000003 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		100000000000000000000004 /* PhotoLibraryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryStore.swift; sourceTree = "<group>"; };
+		100000000000000000000005 /* MoodArchiveStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodArchiveStore.swift; sourceTree = "<group>"; };
+		100000000000000000000006 /* CalendarMonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarMonthView.swift; sourceTree = "<group>"; };
+		100000000000000000000007 /* DayDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayDetailView.swift; sourceTree = "<group>"; };
+		100000000000000000000008 /* MoodDoodleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodDoodleView.swift; sourceTree = "<group>"; };
+		100000000000000000000009 /* VoiceNoteRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceNoteRecorder.swift; sourceTree = "<group>"; };
+		10000000000000000000000A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		10000000000000000000000B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		10000000000000000000000C /* PhotoMoodArchive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoMoodArchive.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		100000000000000000000201 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		100000000000000000000301 = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000302 /* PhotoMoodArchive */,
+				100000000000000000000303 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		100000000000000000000302 /* PhotoMoodArchive */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000001 /* PhotoMoodArchiveApp.swift */,
+				100000000000000000000002 /* ContentView.swift */,
+				100000000000000000000003 /* Models.swift */,
+				100000000000000000000004 /* PhotoLibraryStore.swift */,
+				100000000000000000000005 /* MoodArchiveStore.swift */,
+				100000000000000000000006 /* CalendarMonthView.swift */,
+				100000000000000000000007 /* DayDetailView.swift */,
+				100000000000000000000008 /* MoodDoodleView.swift */,
+				100000000000000000000009 /* VoiceNoteRecorder.swift */,
+				10000000000000000000000A /* Assets.xcassets */,
+				10000000000000000000000B /* Info.plist */,
+			);
+			path = PhotoMoodArchive;
+			sourceTree = "<group>";
+		};
+		100000000000000000000303 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				10000000000000000000000C /* PhotoMoodArchive.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		100000000000000000000401 /* PhotoMoodArchive */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 100000000000000000000701 /* Build configuration list for PBXNativeTarget "PhotoMoodArchive" */;
+			buildPhases = (
+				100000000000000000000501 /* Sources */,
+				100000000000000000000201 /* Frameworks */,
+				100000000000000000000502 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PhotoMoodArchive;
+			productName = PhotoMoodArchive;
+			productReference = 10000000000000000000000C /* PhotoMoodArchive.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		100000000000000000000601 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 2640;
+				TargetAttributes = {
+					100000000000000000000401 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 100000000000000000000700 /* Build configuration list for PBXProject "PhotoMoodArchive" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = "zh-Hans";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				"zh-Hans",
+				en,
+				Base,
+			);
+			mainGroup = 100000000000000000000301;
+			productRefGroup = 100000000000000000000303 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				100000000000000000000401 /* PhotoMoodArchive */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		100000000000000000000502 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				10000000000000000000010A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		100000000000000000000501 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				100000000000000000000101 /* PhotoMoodArchiveApp.swift in Sources */,
+				100000000000000000000102 /* ContentView.swift in Sources */,
+				100000000000000000000103 /* Models.swift in Sources */,
+				100000000000000000000104 /* PhotoLibraryStore.swift in Sources */,
+				100000000000000000000105 /* MoodArchiveStore.swift in Sources */,
+				100000000000000000000106 /* CalendarMonthView.swift in Sources */,
+				100000000000000000000107 /* DayDetailView.swift in Sources */,
+				100000000000000000000108 /* MoodDoodleView.swift in Sources */,
+				100000000000000000000109 /* VoiceNoteRecorder.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		100000000000000000000801 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PhotoMoodArchive/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yuweiwei.photomoodarchive;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		100000000000000000000802 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PhotoMoodArchive/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yuweiwei.photomoodarchive;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		100000000000000000000803 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = A82X676PUG;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+			};
+			name = Debug;
+		};
+		100000000000000000000804 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = A82X676PUG;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		100000000000000000000700 /* Build configuration list for PBXProject "PhotoMoodArchive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				100000000000000000000803 /* Debug */,
+				100000000000000000000804 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		100000000000000000000701 /* Build configuration list for PBXNativeTarget "PhotoMoodArchive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				100000000000000000000801 /* Debug */,
+				100000000000000000000802 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 100000000000000000000601 /* Project object */;
+}
