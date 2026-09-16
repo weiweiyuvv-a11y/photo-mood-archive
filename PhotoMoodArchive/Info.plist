@@ -28,6 +28,8 @@
 	<string>用于在本机按日期整理你的相册，不会上传照片。</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>用于把语音便签转成文字，并保存在当天日历里。</string>
+	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+	<true/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

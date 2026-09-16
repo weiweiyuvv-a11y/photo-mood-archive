@@ -17,6 +17,8 @@
 		100000000000000000000108 /* MoodDoodleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000008 /* MoodDoodleView.swift */; };
 		100000000000000000000109 /* VoiceNoteRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000009 /* VoiceNoteRecorder.swift */; };
 		10000000000000000000010A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10000000000000000000000A /* Assets.xcassets */; };
+200000000000000000000003 = {isa = PBXBuildFile; fileRef = 200000000000000000000002; };
+300000000000000000000003 = {isa = PBXBuildFile; fileRef = 300000000000000000000002; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,10 @@
 		10000000000000000000000A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		10000000000000000000000B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		10000000000000000000000C /* PhotoMoodArchive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoMoodArchive.app; sourceTree = BUILT_PRODUCTS_DIR; };
+200000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTests.swift; sourceTree = "<group>"; };
+200000000000000000000004 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = ArchiveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+300000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveUITests.swift; sourceTree = "<group>"; };
+300000000000000000000004 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = ArchiveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +48,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+200000000000000000000007 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+300000000000000000000007 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -50,6 +58,8 @@
 			children = (
 				100000000000000000000302 /* PhotoMoodArchive */,
 				100000000000000000000303 /* Products */,
+300000000000000000000005,
+200000000000000000000005,
 			);
 			sourceTree = "<group>";
 		};
@@ -79,8 +89,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+200000000000000000000005 = {isa = PBXGroup; children = (200000000000000000000002,); path = Tests; sourceTree = "<group>"; };
+300000000000000000000005 = {isa = PBXGroup; children = (300000000000000000000002,); path = Tests; sourceTree = "<group>"; };
 /* End PBXGroup section */
 
+20000000000000000000000C = {isa = PBXContainerItemProxy; containerPortal = 100000000000000000000601; proxyType = 1; remoteGlobalIDString = 100000000000000000000401; remoteInfo = PhotoMoodArchive; };
+20000000000000000000000D = {isa = PBXTargetDependency; target = 100000000000000000000401; targetProxy = 20000000000000000000000C; };
+30000000000000000000000C = {isa = PBXContainerItemProxy; containerPortal = 100000000000000000000601; proxyType = 1; remoteGlobalIDString = 100000000000000000000401; remoteInfo = PhotoMoodArchive; };
+30000000000000000000000D = {isa = PBXTargetDependency; target = 100000000000000000000401; targetProxy = 30000000000000000000000C; };
 /* Begin PBXNativeTarget section */
 		100000000000000000000401 /* PhotoMoodArchive */ = {
 			isa = PBXNativeTarget;
@@ -99,6 +115,8 @@
 			productReference = 10000000000000000000000C /* PhotoMoodArchive.app */;
 			productType = "com.apple.product-type.application";
 		};
+200000000000000000000001 = {isa = PBXNativeTarget; buildConfigurationList = 200000000000000000000009; buildPhases = (200000000000000000000006,200000000000000000000007,200000000000000000000008,); buildRules = (); dependencies = (20000000000000000000000D,); name = ArchiveTests; productName = ArchiveTests; productReference = 200000000000000000000004; productType = "com.apple.product-type.bundle.unit-test"; };
+300000000000000000000001 = {isa = PBXNativeTarget; buildConfigurationList = 300000000000000000000009; buildPhases = (300000000000000000000006,300000000000000000000007,300000000000000000000008,); buildRules = (); dependencies = (30000000000000000000000D,); name = ArchiveUITests; productName = ArchiveUITests; productReference = 300000000000000000000004; productType = "com.apple.product-type.bundle.ui-testing"; };
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -129,6 +147,8 @@
 			projectRoot = "";
 			targets = (
 				100000000000000000000401 /* PhotoMoodArchive */,
+300000000000000000000001,
+200000000000000000000001,
 			);
 		};
 /* End PBXProject section */
@@ -142,6 +162,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+200000000000000000000008 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+300000000000000000000008 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -161,6 +183,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+200000000000000000000006 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (200000000000000000000003,); runOnlyForDeploymentPostprocessing = 0; };
+300000000000000000000006 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (300000000000000000000003,); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
@@ -173,7 +197,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = PhotoMoodArchive/Info.plist;
@@ -182,7 +206,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yuweiwei.photomoodarchive;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -203,7 +227,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = PhotoMoodArchive/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -211,7 +235,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yuweiwei.photomoodarchive;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -307,6 +331,10 @@
 			};
 			name = Release;
 		};
+20000000000000000000000A = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; SWIFT_VERSION = 6.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = com.yuweiwei.ArchiveTests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; TARGETED_DEVICE_FAMILY = "1,2"; CODE_SIGN_STYLE = Automatic; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks","@loader_path/Frameworks",); BUNDLE_LOADER = "$(TEST_HOST)"; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PhotoMoodArchive.app/PhotoMoodArchive"; }; name = Debug; };
+20000000000000000000000B = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; SWIFT_VERSION = 6.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = com.yuweiwei.ArchiveTests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; TARGETED_DEVICE_FAMILY = "1,2"; CODE_SIGN_STYLE = Automatic; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks","@loader_path/Frameworks",); BUNDLE_LOADER = "$(TEST_HOST)"; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PhotoMoodArchive.app/PhotoMoodArchive"; }; name = Release; };
+30000000000000000000000A = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; SWIFT_VERSION = 6.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = com.yuweiwei.ArchiveUITests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; TARGETED_DEVICE_FAMILY = "1,2"; CODE_SIGN_STYLE = Automatic; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks","@loader_path/Frameworks",); TEST_TARGET_NAME = PhotoMoodArchive; }; name = Debug; };
+30000000000000000000000B = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; SWIFT_VERSION = 6.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = com.yuweiwei.ArchiveUITests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; TARGETED_DEVICE_FAMILY = "1,2"; CODE_SIGN_STYLE = Automatic; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks","@loader_path/Frameworks",); TEST_TARGET_NAME = PhotoMoodArchive; }; name = Release; };
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -328,6 +356,8 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+200000000000000000000009 = {isa = XCConfigurationList; buildConfigurations = (20000000000000000000000A,20000000000000000000000B,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+300000000000000000000009 = {isa = XCConfigurationList; buildConfigurations = (30000000000000000000000A,30000000000000000000000B,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 /* End XCConfigurationList section */
 	};
 	rootObject = 100000000000000000000601 /* Project object */;

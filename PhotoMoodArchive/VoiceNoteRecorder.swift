@@ -1,108 +1,83 @@
 import AVFoundation
-import Foundation
 import Speech
 
 @MainActor
 final class VoiceNoteRecorder: ObservableObject {
     @Published private(set) var isRecording = false
+    @Published private(set) var isStarting = false
     @Published private(set) var transcript = ""
     @Published private(set) var statusText = ""
-
-    private let audioEngine = AVAudioEngine()
-    private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
-    private var recognitionTask: SFSpeechRecognitionTask?
+    private let engine = AVAudioEngine()
     private let recognizer = SFSpeechRecognizer(locale: Locale(identifier: "zh-CN"))
+    private var request: SFSpeechAudioBufferRecognitionRequest?
+    private var recognition: SFSpeechRecognitionTask?
+    private var hasTap = false
+    private var session = UUID()
+    private var interruptionObserver: NotificationObservation?
 
-    func toggle() {
-        if isRecording {
-            stop()
-        } else {
-            Task { await start() }
-        }
+    init() {
+        interruptionObserver = NotificationObservation(NotificationCenter.default.addObserver(forName: AVAudioSession.interruptionNotification, object: nil, queue: .main) { [weak self] _ in
+            Task { @MainActor in self?.stop(message: "语音输入已中断，已识别的文字会保留。") }
+        })
     }
 
     func start() async {
-        guard !isRecording else { return }
-        let speechAllowed = await requestSpeechAuthorization()
-        let micAllowed = await requestMicrophoneAuthorization()
-
-        guard speechAllowed && micAllowed else {
-            statusText = "需要开启麦克风和语音识别权限"
-            return
+        guard !isRecording, !isStarting else { return }
+        isStarting = true
+        let token = UUID(); session = token
+        let speech = await withCheckedContinuation { continuation in
+            SFSpeechRecognizer.requestAuthorization { continuation.resume(returning: $0 == .authorized) }
         }
-
+        guard session == token else { return }
+        guard speech else { stop(message: "请在系统设置中开启语音识别权限。"); return }
+        let mic = await AVAudioApplication.requestRecordPermission()
+        guard session == token else { return }
+        guard speech && mic else { stop(message: "请在系统设置中开启麦克风和语音识别权限。"); return }
+        guard let recognizer, recognizer.isAvailable, recognizer.supportsOnDeviceRecognition else {
+            stop(message: "这台设备暂不支持中文本地识别，可以直接输入文字。"); return
+        }
         do {
-            try startRecognition()
-        } catch {
-            statusText = "语音输入启动失败：\(error.localizedDescription)"
-            stop()
-        }
-    }
-
-    func stop() {
-        audioEngine.stop()
-        audioEngine.inputNode.removeTap(onBus: 0)
-        recognitionRequest?.endAudio()
-        recognitionTask?.cancel()
-        recognitionRequest = nil
-        recognitionTask = nil
-        isRecording = false
-        statusText = ""
-    }
-
-    private func startRecognition() throws {
-        recognitionTask?.cancel()
-        recognitionTask = nil
-
-        let audioSession = AVAudioSession.sharedInstance()
-        try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
-        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-
-        let request = SFSpeechAudioBufferRecognitionRequest()
-        request.shouldReportPartialResults = true
-        recognitionRequest = request
-
-        let inputNode = audioEngine.inputNode
-        let format = inputNode.outputFormat(forBus: 0)
-        inputNode.removeTap(onBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak request] buffer, _ in
-            request?.append(buffer)
-        }
-
-        audioEngine.prepare()
-        try audioEngine.start()
-
-        isRecording = true
-        statusText = "正在听..."
-
-        recognitionTask = recognizer?.recognitionTask(with: request) { [weak self] result, error in
-            Task { @MainActor in
-                guard let self else { return }
-                if let result {
-                    self.transcript = result.bestTranscription.formattedString
-                    self.statusText = result.isFinal ? "" : "正在转文字..."
-                }
-
-                if error != nil || result?.isFinal == true {
-                    self.stop()
+            let audioSession = AVAudioSession.sharedInstance()
+            try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+            try audioSession.setActive(true)
+            let request = SFSpeechAudioBufferRecognitionRequest()
+            request.requiresOnDeviceRecognition = true
+            request.shouldReportPartialResults = true
+            self.request = request
+            transcript = ""
+            let node = engine.inputNode
+            let format = node.outputFormat(forBus: 0)
+            guard format.sampleRate > 0, format.channelCount > 0 else { stop(message: "麦克风暂时不可用，请稍后重试。"); return }
+            node.installTap(onBus: 0, bufferSize: 1024, format: format) { @Sendable [weak request] buffer, _ in request?.append(buffer) }
+            hasTap = true
+            engine.prepare(); try engine.start()
+            isStarting = false; isRecording = true; statusText = "正在听，点击结束即可保留文字。"
+            recognition = recognizer.recognitionTask(with: request) { @Sendable [weak self] result, error in
+                let text = result?.bestTranscription.formattedString
+                let final = result?.isFinal == true
+                let errorText = error?.localizedDescription
+                Task { @MainActor in
+                    guard let self, self.session == token else { return }
+                    if let text { self.transcript = text }
+                    if let errorText { self.stop(message: "语音输入已结束：\(errorText)") }
+                    else if final { self.stop(message: "语音已转为文字。") }
                 }
             }
-        }
+        } catch { stop(message: "无法启动语音输入，请稍后重试。") }
     }
+    func stop(message: String = "") {
+        session = UUID()
+        engine.stop()
+        if hasTap { engine.inputNode.removeTap(onBus: 0); hasTap = false }
+        request?.endAudio(); recognition?.cancel()
+        request = nil; recognition = nil
+        isStarting = false; isRecording = false; statusText = message
+        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+    }
+}
 
-    private func requestSpeechAuthorization() async -> Bool {
-        await withCheckedContinuation { continuation in
-            SFSpeechRecognizer.requestAuthorization { status in
-                continuation.resume(returning: status == .authorized)
-            }
-        }
-    }
-
-    private func requestMicrophoneAuthorization() async -> Bool {
-        await withCheckedContinuation { continuation in
-            AVAudioSession.sharedInstance().requestRecordPermission { allowed in
-                continuation.resume(returning: allowed)
-            }
-        }
-    }
+private final class NotificationObservation: @unchecked Sendable {
+    let token: NSObjectProtocol
+    init(_ token: NSObjectProtocol) { self.token = token }
+    deinit { NotificationCenter.default.removeObserver(token) }
 }
